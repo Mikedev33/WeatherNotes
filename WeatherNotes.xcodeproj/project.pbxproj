@@ -13,6 +13,10 @@
 		CE3BADE32E6729C200D400E7 /* WeatherNotesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BADDD2E6729C200D400E7 /* WeatherNotesApp.swift */; };
 		CE3BADE42E6729C200D400E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE3BADD82E6729C200D400E7 /* Assets.xcassets */; };
 		CE3BADE52E6729C200D400E7 /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE3BADDB2E6729C200D400E7 /* Secrets.plist */; };
+		CE3BADF12E676D1000D400E7 /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BADF02E676D1000D400E7 /* NotesViewModel.swift */; };
+		CE3BADF32E67749D00D400E7 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BADF22E67749700D400E7 /* LocationManager.swift */; };
+		CE3BADF72E67750200D400E7 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BADF62E6774FE00D400E7 /* WeatherService.swift */; };
+		CE3BADFA2E67966B00D400E7 /* AddNoteSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BADF92E67966800D400E7 /* AddNoteSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,11 @@
 		CE3BADDB2E6729C200D400E7 /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		CE3BADDD2E6729C200D400E7 /* WeatherNotesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherNotesApp.swift; sourceTree = "<group>"; };
 		CE3BADDF2E6729C200D400E7 /* WeatherNotes.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WeatherNotes.xcdatamodel; sourceTree = "<group>"; };
+		CE3BADF02E676D1000D400E7 /* NotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewModel.swift; sourceTree = "<group>"; };
+		CE3BADF22E67749700D400E7 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		CE3BADF62E6774FE00D400E7 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		CE3BADF82E677AA100D400E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CE3BADF92E67966800D400E7 /* AddNoteSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNoteSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +64,10 @@
 		CE3BADDE2E6729C200D400E7 /* WeatherNotes */ = {
 			isa = PBXGroup;
 			children = (
+				CE3BADF82E677AA100D400E7 /* Info.plist */,
 				CE3BADE62E6729CE00D400E7 /* Models */,
-				CE3BADE72E6729DF00D400E7 /* ViewModels */,
 				CE3BADE82E672A7D00D400E7 /* Views */,
+				CE3BADE72E6729DF00D400E7 /* ViewModels */,
 				CE3BADE92E672AA100D400E7 /* Services */,
 				CE3BADD82E6729C200D400E7 /* Assets.xcassets */,
 				CE3BADD92E6729C200D400E7 /* ContentView.swift */,
@@ -79,6 +89,9 @@
 		CE3BADE72E6729DF00D400E7 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				CE3BADF62E6774FE00D400E7 /* WeatherService.swift */,
+				CE3BADF22E67749700D400E7 /* LocationManager.swift */,
+				CE3BADF02E676D1000D400E7 /* NotesViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -86,6 +99,7 @@
 		CE3BADE82E672A7D00D400E7 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CE3BADF92E67966800D400E7 /* AddNoteSheetView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -171,9 +185,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE3BADE02E6729C200D400E7 /* ContentView.swift in Sources */,
+				CE3BADF12E676D1000D400E7 /* NotesViewModel.swift in Sources */,
+				CE3BADF32E67749D00D400E7 /* LocationManager.swift in Sources */,
 				CE3BADE12E6729C200D400E7 /* Persistence.swift in Sources */,
+				CE3BADFA2E67966B00D400E7 /* AddNoteSheetView.swift in Sources */,
 				CE3BADE22E6729C200D400E7 /* WeatherNotes.xcdatamodeld in Sources */,
 				CE3BADE32E6729C200D400E7 /* WeatherNotesApp.swift in Sources */,
+				CE3BADF72E67750200D400E7 /* WeatherService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,6 +329,8 @@
 				DEVELOPMENT_TEAM = 94PAS7HRP9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WeatherNotes/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to fetch the current weather for your notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +359,8 @@
 				DEVELOPMENT_TEAM = 94PAS7HRP9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WeatherNotes/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to fetch the current weather for your notes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

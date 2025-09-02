@@ -7,110 +7,71 @@
 
 
 
+
+
 import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    // Fetch all notes from Core Data, sorted by creation date
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Note.timestamp, ascending: true)],
-        animation: .default)
-    private var notes: FetchedResults<Note>
-
+    @StateObject private var viewModel: NotesViewModel
+    @State private var showingAddNoteSheet = false
+    
+    init(context: NSManagedObjectContext) {
+        _viewModel = StateObject(wrappedValue: NotesViewModel(context: context))
+    }
+    
     var body: some View {
         NavigationView {
             List {
-                ForEach(notes) { note in
+                ForEach(viewModel.notes) { note in
                     HStack {
-                        // Left side: text and metadata
-                        VStack(alignment: .leading) {
-                            // Note text
+                        VStack(alignment: .leading, spacing: 4) {
                             Text(note.text ?? "")
                                 .font(.headline)
-                            
-                            // Creation date
                             if let date = note.timestamp {
                                 Text(date, formatter: itemFormatter)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }
-                            
-                            // Weather description (placeholder if empty)
                             Text(note.weatherDesc?.isEmpty == false ? note.weatherDesc! : "Weather description...")
                                 .font(.caption2)
                                 .foregroundColor(.gray)
                         }
                         Spacer()
-                        
-                        // Right side: weather data
                         VStack {
-                            // Temperature (placeholder if 0)
                             Text(note.temperature != 0 ? "\(note.temperature, specifier: "%.1f")°C" : "--°C")
                                 .font(.subheadline)
-                            
-                            // Weather icon (placeholder if empty)
                             Image(systemName: note.weatherIcon?.isEmpty == false ? note.weatherIcon! : "cloud.sun.fill")
                                 .foregroundColor(.blue)
                         }
                     }
                 }
-                .onDelete(perform: deleteNotes)
+                .onDelete { indexSet in
+                    indexSet.map { viewModel.notes[$0] }.forEach(viewModel.delete)
+                }
             }
             .toolbar {
-                // Edit mode button
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                // Add note button
+                ToolbarItem(placement: .navigationBarTrailing) { EditButton() }
                 ToolbarItem {
-                    Button(action: addNote) {
+                    Button(action: { showingAddNoteSheet = true }) {
                         Label("Add Note", systemImage: "plus")
                     }
                 }
             }
+            .sheet(isPresented: $showingAddNoteSheet) {
+                AddNoteSheetView(isPresented: $showingAddNoteSheet) { text in
+                    viewModel.addNoteWithWeather(text: text)
+                }
+            }
             
-            // Default text if no note is selected (on iPad / Mac)
+
+
+            
             Text("Select a note")
-        }
-    }
-
-    // Create and save a new note
-    private func addNote() {
-        withAnimation {
-            let newNote = Note(context: viewContext)
-            newNote.timestamp = Date()
-            newNote.text = "New note"
-            newNote.temperature = 0
-            newNote.weatherIcon = "" // Placeholder will be used
-            newNote.weatherDesc = "" // Placeholder will be used
-
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved Core Data error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    // Delete selected notes
-    private func deleteNotes(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { notes[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved Core Data error \(nsError), \(nsError.userInfo)")
-            }
         }
     }
 }
 
-// Date formatter for displaying note timestamps
 private let itemFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .short
@@ -119,5 +80,5 @@ private let itemFormatter: DateFormatter = {
 }()
 
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView(context: PersistenceController.preview.container.viewContext)
 }
