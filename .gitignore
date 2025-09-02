@@ -1,0 +1,23 @@
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+
+# Swift Package Manager
+Packages/
+.swiftpm/
+
+# Secrets / API keys
+*.plist
+
+# MacOS
+.DS_Store
+
+# SwiftUI Previews
+*.preview-thumbnails
+
+# Temporary files
+*.swp
+*~
+
