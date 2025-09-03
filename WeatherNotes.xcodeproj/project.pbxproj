@@ -93,7 +93,6 @@
 		CE3BADE72E6729DF00D400E7 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				CE3BADF22E67749700D400E7 /* LocationManager.swift */,
 				CE3BADF02E676D1000D400E7 /* NotesViewModel.swift */,
 			);
 			path = ViewModels;
@@ -112,6 +111,7 @@
 		CE3BADE92E672AA100D400E7 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				CE3BADF22E67749700D400E7 /* LocationManager.swift */,
 				CE3BADF62E6774FE00D400E7 /* WeatherService.swift */,
 			);
 			path = Services;

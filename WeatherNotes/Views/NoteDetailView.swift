@@ -13,50 +13,74 @@ import SwiftUI
 
 struct NoteDetailView: View {
     let note: Note
-
+    
     var body: some View {
-        VStack(spacing: 24) {
-            // Note text
-            Text(note.text ?? "No text")
-                .font(.title)
-                .fontWeight(.semibold)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+        VStack {
+            Spacer(minLength: 40)
             
-            // Date
-            if let date = note.timestamp {
-                Text(date, formatter: Formatters.noteDate)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+            // MARK: - Note text
+            VStack(spacing: 12) {
+                Text(note.text ?? "No text")
+                    .font(.title2)
+                    .bold()
+                    .multilineTextAlignment(.center)
+                
+                if let date = note.timestamp {
+                    Text(date, formatter: Formatters.noteDate)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
             }
+            .padding(.horizontal)
             
-            // Weather card
+            Spacer(minLength: 30)
+            
+            // MARK: - Weather card
             VStack(spacing: 16) {
-                Image(systemName: note.weatherIcon?.isEmpty == false ? note.weatherIcon! : "cloud.sun.fill")
-                    .font(.system(size: 60))
+                // Safe temperature
+                let safeTemp = note.temperature.isNaN ? 0 : note.temperature
+                Text(safeTemp != 0 ? "\(safeTemp, specifier: "%.1f")°C" : "--°C")
+                    .font(.system(size: 50, weight: .bold))
+                
+                // Weather icon
+                let iconName = (note.weatherIcon?.isEmpty == false) ? note.weatherIcon! : "cloud.sun.fill"
+                Image(systemName: iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 80, height: 80)
                     .foregroundColor(.blue)
                 
-                Text("\(note.temperature, specifier: "%.1f")°C")
-                    .font(.largeTitle)
-                    .fontWeight(.medium)
-                
-                Text(note.weatherDesc?.capitalized ?? "No description")
+                // Weather description
+                Text(note.weatherDesc ?? "Fetching weather...")
                     .font(.title3)
                     .foregroundColor(.gray)
+                    .multilineTextAlignment(.center)
             }
-            .frame(width: 220, height: 220)
-            .background(Color(.systemGray6))
+            .padding()
+            .frame(maxWidth: 250)
+            .background(Color(UIColor.secondarySystemBackground))
             .cornerRadius(20)
-            .shadow(color: Color.black.opacity(0.1), radius: 6, x: 0, y: 3)
+            .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
             
-            Spacer() 
+            Spacer()
         }
-        .padding()
         .navigationTitle("Note Details")
         .navigationBarTitleDisplayMode(.inline)
+        .padding(.top)
     }
 }
 
-
-
-
+#Preview {
+    // Preview using a dummy Note
+    let context = PersistenceController.preview.container.viewContext
+    let note = Note(context: context)
+    note.text = "Morning Run"
+    note.timestamp = Date()
+    note.temperature = 23
+    note.weatherIcon = "sun.max.fill"
+    note.weatherDesc = "Clear sky"
+    
+    return NavigationView {
+        NoteDetailView(note: note)
+    }
+}
